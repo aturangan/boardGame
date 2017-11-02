@@ -1,0 +1,16 @@
+.container {
+  font-family: Arial, "Times New Roman", serif;
+  font-weight: bold;
+  float: left;
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+
+.currentWord {
+  font-weight: normal;
+}
+
+.submit {
+  float: right;
+  margin-right: 30px;
+}

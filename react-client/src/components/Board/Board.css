@@ -1,0 +1,26 @@
+.board {
+  display: block;
+  text-align: center;
+  padding: 7px;
+  background-color: #398BD4;
+  border: 5px solid #FFCA08;
+  margin: 30px auto;
+  margin-bottom: 20px;
+  width: 75%;
+  height: 60%;
+  min-width: 320px;
+  min-height: 320px;
+}
+
+.row {
+  width: 52px;
+  height: 52px;
+  /*border-radius: 5px;*/
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  -webkit-transition: background 0.5s; /* Safari 
+  /*transition: background 0.5s;
+  outline: none;
+  text-transform: uppercase;*/
+}

@@ -1,0 +1,29 @@
+.tile {
+  text-align: center;
+  display: block;
+  float: left;
+  background-color: white;
+  border-radius: 5px;
+  margin: 5px 8px 5px 8px;
+  box-shadow: -3px 3px 3px #404040;
+  width: 54px;
+  height: 54px;  
+}
+
+.tile-selected {
+  text-align: center;
+  display: block;
+  float: left;
+  background-color: #ACCEEC;
+  border-radius: 5px;
+  margin: 5px 8px 5px 8px;
+  box-shadow: -3px 3px 3px #404040;
+  width: 54px;
+  height: 54px;  
+}
+
+.letter {
+  padding: 17px;
+  font-family: Arial, "Times New Roman", Times, serif;
+  font-weight: bold;
+}
