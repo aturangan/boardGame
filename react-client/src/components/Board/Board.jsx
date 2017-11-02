@@ -42,7 +42,7 @@ class Board extends Component {
                   );
                 })}
 
-                
+
               </div>
             );
         })}

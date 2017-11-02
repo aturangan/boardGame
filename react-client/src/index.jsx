@@ -37,7 +37,6 @@ class App extends Component {
 
     for (let i = 0; i < this.state.stack.length; i++) {
       let letter = this.state.stack[i]; 
-
       word += letter; 
     }
 
@@ -51,7 +50,7 @@ class App extends Component {
       this.state.selectedFreq[i] = 0;
     }
 
-    console.log('in reset selected freq from index jsx')
+    console.log('FREQ reset from index jsx', this.state.count);
   }
 
   resetBoard() {
@@ -60,7 +59,7 @@ class App extends Component {
     let score = calculateScore(word);
 
     checkWord({ word: word}, res => {
-      const total = score + this.state.totalScore;
+    const total = score + this.state.totalScore;
 
       this.setState({
         validWords: this.state.validWords.concat([word]),
@@ -72,23 +71,26 @@ class App extends Component {
       console.log('valid words', this.state.validWords);
     }); 
 
-    if (this.state.count >= 1) {
-      this.resetSelectedFreqs();
+    //call reset freqs every time count is either 1 or 2 
+    //when count is 2, set back to 1 
 
+    if (this.state.count === 2) {
+      this.resetSelectedFreqs();
       this.setState({
-        count: 0,
+        count: this.state.count - 1,
         stack: [],
         currentWord: '',
         reset: false
       });
-    } else {
+    } else if (this.state.count === 1 || this.state.count === 0) {
+      this.resetSelectedFreqs();
       this.setState({
+        count: this.state.count + 1,
         stack: [],
         currentWord: '',
-        reset: true, //board is white, reset is true
-        count: this.state.count + 1 //count is 1 
+        reset: false
       });
-
+  
       console.log('COUNT FROM INDEX.JSX', this.state.count);
     }
   }

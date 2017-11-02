@@ -73,7 +73,7 @@ export const calculateScore = (word) => {
   if (length === 6) return 3;
   if (length === 5) return 2;
   if (length === 3 || length === 4) return 1;
-  if (length === 1 || length === 2) return 0;
+  if (length === 1 || length === 2 || length === 0) return 0;
 };
 
 export const checkWord = (data, action) => {
