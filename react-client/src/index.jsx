@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 import logo from './logo.png';
 import styles from './index.css';
 
-import { generateBoard, duplicateBoard, isTileEqual, 
+import { generateBoard, duplicateBoard, areEqualDice, 
        isAdjacent, calculateScore, checkWord } from './util.js';
 import Board from './components/Board/Board.jsx';
 import CurrentWord from './components/CurrentWord/CurrentWord.jsx';
@@ -16,72 +15,24 @@ class App extends Component {
 
     this.makeBoard = generateBoard();
     this.state = {
-      //selected: false,
       board: this.makeBoard,
       currentWord: '',
       currentWordIndex: [],
-      //wordScoreList: {},
-
-
-
-
-
-
-      //my states
-      //selectedFreq: {}, 
-      // reset: false,
-      count: 0,
-      //stack: [],
-      // currentWord: '',
-      
-
       validWords: [],
       points: [],
-      totalScore: 0,
-      //renderScores: false
-    }
+      totalScore: 0
+    };
 
-    //this.makeCurrentWord = this.makeCurrentWord.bind(this);
-    //this.resetSelectedFreqs = this.resetSelectedFreqs.bind(this);
     this.resetBoard = this.resetBoard.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
-  // makeCurrentWord() {
-  //   let word = ''; 
-
-  //   for (let i = 0; i < this.state.stack.length; i++) {
-  //     let letter = this.state.stack[i]; 
-  //     word += letter; 
-  //   }
-
-  //   this.setState({
-  //     currentWord: word
-  //   });
-  // }
-
-  // resetSelectedFreqs() {
-  //   for (let i = 1; i <= 25; i++) {
-  //     this.state.selectedFreq[i] = 0;
-  //   }
-
-  //   console.log('FREQ reset from index jsx', this.state.count);
-  // }
-
-
-
-
-
-
-
-
-  //test run
   handleClick(rowId, columnId) {
     const current = this.state.board[rowId][columnId];
     const previous = this.state.currentWordIndex[this.state.currentWordIndex.length - 1]
 
     if (current.selected) {
-      if (isTileEqual(current, previous)) {
+      if (areEqualDice(current, previous)) {
         const newBoard = duplicateBoard(this.state.board);
         newBoard[rowId][columnId].selected = false;
         
@@ -92,9 +43,7 @@ class App extends Component {
         });
       }
     } else {
-      console.log('in else statement')
-
-      if (!previous || isAdjacent(current, previous)) {
+      if (isAdjacent(current, previous) || !previous) {
         const newBoard = duplicateBoard(this.state.board);
         newBoard[rowId][columnId].selected = true;
 
@@ -111,9 +60,8 @@ class App extends Component {
   }
 
   resetBoard() {
-    let word = this.state.currentWord;
-    let score = calculateScore(word);
-
+    const word = this.state.currentWord;
+    const score = calculateScore(word);
     const emptyBoard = this.makeBoard;
 
     if (checkWord(word)) {
@@ -137,19 +85,10 @@ class App extends Component {
         <Board 
           generateBoard={ generateBoard } 
           board={ this.state.board }
-          //selected={ this.state.selected }
-          stack={ this.state.stack }
           currentWord={ this.state.currentWord }
-          makeCurrentWord={ this.makeCurrentWord }
-
           handleClick={ this.handleClick }
-          
-          reset={ this.state.reset }
-          count={ this.state.count }
-          selectedFreq={ this.state.selectedFreq }
         />
         <CurrentWord 
-          stack={ this.state.stack }
           currentWord={ this.state.currentWord }
           resetBoard={ this.resetBoard }
         />

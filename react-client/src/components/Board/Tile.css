@@ -1,25 +1,25 @@
-.tile {
-  text-align: center;
+.normal {
   display: block;
   float: left;
+  width: 54px;
+  height: 54px;  
+  text-align: center;
+  margin: 5px 8px 5px 8px;
+  box-shadow: -3px 3px 3px #404040;
   background-color: white;
   border-radius: 5px;
-  margin: 5px 8px 5px 8px;
-  box-shadow: -3px 3px 3px #404040;
-  width: 54px;
-  height: 54px;  
 }
 
-.tile-selected {
-  text-align: center;
+.selected {
   display: block;
   float: left;
-  background-color: #ACCEEC;
-  border-radius: 5px;
-  margin: 5px 8px 5px 8px;
-  box-shadow: -3px 3px 3px #404040;
   width: 54px;
   height: 54px;  
+  margin: 5px 8px 5px 8px;
+  box-shadow: -3px 3px 3px #404040;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #ACCEEC;
 }
 
 .letter {

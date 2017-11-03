@@ -1,11 +1,10 @@
-const axios = require('axios');
-const TileData = require('./Dice.js');
+const Dice = require('./Dice.js');
 
-let wordHash = {};
+let dictionary = {};
 
 export const checkWord = (word) => {
-  if (!wordHash.hasOwnProperty(word)) {
-    wordHash[word] = 1;
+  if (!dictionary.hasOwnProperty(word)) {
+    dictionary[word] = 1;
     return true;
   } else {
     return false;
@@ -17,7 +16,6 @@ const shuffleDice = (dice) => {
     let j = Math.floor(Math.random() * (i + 1));
     [dice[i], dice[j]] = [dice[j], dice[i]];
   }
-
   return dice;
 };
 
@@ -68,13 +66,11 @@ export const generateBoard = () => {
   for (let row = 0; row < board.length; row++) {
     for (let col = 0; col < board.length; col++) {
       let die = shuffled.shift();
-
       let face = rollDie(die);
-      const tileData = new TileData(face, row, col);
-      board[row][col] = tileData;
+      const dice = new Dice(face, row, col);
+      board[row][col] = dice;
     }
   }
-
   return board;
 };
 
@@ -87,26 +83,25 @@ export const duplicateBoard = (board) => {
   return copy;
 };
 
-export const isTileEqual = (tile1, tile2) => {
-  if (!tile1 || !tile2) return false;
-  return tile1.rowId === tile2.rowId && tile1.columnId === tile2.columnId;
+export const areEqualDice = (die1, die2) => {
+  if (!die1 || !die2) return false;
+  return die1.rowId === die2.rowId && die1.columnId === die2.columnId;
 };
 
-export const isAdjacent = (tile1, tile2) => {
-  if (!tile1 || !tile2) return false;
-  if (isTileEqual(tile1, tile2)) {
+export const isAdjacent = (die1, die2) => {
+  if (!die1 || !die2) return false;
+  if (areEqualDice(die1, die2)) {
     return false;
   }
 
-  const colDiff = Math.abs(tile1.columnId - tile2.columnId);
-  const rowDiff = Math.abs(tile1.rowId - tile2.rowId);
+  const colDiff = Math.abs(die1.columnId - die2.columnId);
+  const rowDiff = Math.abs(die1.rowId - die2.rowId);
   if (colDiff <= 1 && rowDiff <= 1) {
     return true;
   } else {
     return false;
   }
 };
-
 
 export const calculateScore = (word) => {
   let points = 0;
@@ -119,15 +114,3 @@ export const calculateScore = (word) => {
   if (length === 3 || length === 4) return 1;
   if (length === 1 || length === 2 || length === 0) return 0;
 };
-
-// export const checkWord = (data, action) => {
-//   axios.post('/checkWord', data)
-//   .then(res => {
-//     if (res.status >= 400) { throw new Error('Something Went Wrong!'); }
-//     return;
-//   })
-//   .then(data => {
-//     console.log('data', data);
-//     if (action) action(data);
-//   })
-// };
