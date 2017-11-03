@@ -27,15 +27,30 @@ class Tile extends Component {
 
     if (freq[index][0] === 1) {
       console.log('freq at index', freq[index]);
-      console.log('supposed to equal freq at index', [1, e]);
+      console.log('top', top);
 
-      if (e === top && (freqIndex === currentFreqIndex)) { //if e is the same as the top AND index is the same
-        freq[index] = 0;
+      //need to check the top letter and id but stack only has letter 
+      if (e === top) {
+        for (let key in freq) {
+          if (freq[key][2] === e && freq[key][1] === index) {
+            console.log('freq key 1', freq[key][1]);
+            console.log('current index', index);
 
-        this.setState({
-          stack: this.props.stack.pop(),
-        });
+            this.setState({
+              stack: this.props.stack.pop()
+            });
+          }
+        }
       }
+
+
+      // if (e === top && (freqIndex !== currentFreqIndex)) { //if e is the same as the top AND index is the same
+      //   freq[index] = 0;
+
+      //   this.setState({
+      //     stack: this.props.stack.pop(),
+      //   });
+      // }
 
       //if freq is 1 and not on the stack?? shouldnt happen??
     } else if (freq[index] === 0) {
@@ -43,6 +58,7 @@ class Tile extends Component {
       
       if (freqIndex !== currentFreqIndex) { //need to check the index too b/c this doesn't work with 2 consecutive same letters
         freq[index] = [1, index, e];
+        console.log('saved', freq[index]);
         
         this.setState({
           stack: this.props.stack.push(e)

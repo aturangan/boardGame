@@ -80,12 +80,15 @@ export const checkWord = (data, action) => {
   axios.post('/checkWord', data)
   .then(res => {
     if (res.status >= 400) { throw new Error('Something Went Wrong!'); }
-    return res;
+    return;
   })
   .then(data => {
-    if (action) action(data.data);
+    console.log('data', data);
+    if (action) action(data);
   })
 };
+
+
 
 // export const jobUpdate = (id, action) => {
 //   axios.get(`/jobs/${ id }`)

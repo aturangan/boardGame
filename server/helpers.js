@@ -3,17 +3,34 @@ const bodyParser = require('body-parser');
 const Trie = require('./trie.js');
 
 const trie = new Trie();
+let hash = {};
 
 module.exports.checkWord = (req, res) => {
   //if word is in trie, send back a NO to client
 
-  const word = Object.keys(req.body)[0];
-  let outcome = 'Word Already Added'; 
+   const word = Object.keys(req.body)[0];
+  console.log('word', word);
+
+  // let outcome = {};
+
+  // if (!hash.hasOwnProperty(word)) {
+  // 	hash[word] = 1;
+  // 	outcome[outcome] = 'Valid';
+  // } else if (hash[word]) {
+  // 	outcome[outcome] = 'Invalid';
+  // }
+
+  // console.log('HASH', hash);
+  // res.send(outcome);
+
+  let outcome = 'Word Already Added';
 
   if (!trie.find(word)) {
     trie.add(word);
     console.log(word + ' was added to the trie');
     outcome = 'Valid'; 
+  } else {
+  	outcome = 'Word Already Added';
   }
 
   res.send(outcome);

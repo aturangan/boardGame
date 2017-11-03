@@ -58,15 +58,19 @@ class App extends Component {
     let word = this.state.currentWord;
     let score = calculateScore(word);
 
-    checkWord({ word: word}, res => {
-    const total = score + this.state.totalScore;
+    checkWord(word, res => {
+      const total = score + this.state.totalScore;
 
-      this.setState({
-        validWords: this.state.validWords.concat([word]),
-        points: this.state.points.concat([score]),
-        totalScore: total,
-        renderScores: !this.state.renderScores
-      });  
+      console.log('ressss', res);
+
+      //if (res === 'Valid') {
+        this.setState({
+          validWords: this.state.validWords.concat([word]),
+          points: this.state.points.concat([score]),
+          totalScore: total,
+          renderScores: !this.state.renderScores
+        });        
+      //}
 
       console.log('valid words', this.state.validWords);
     }); 
