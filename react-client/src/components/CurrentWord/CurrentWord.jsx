@@ -15,7 +15,7 @@ class CurrentWord extends Component {
             { ' ' + this.props.currentWord }
           </span>
         </div>
-        <button className="submit" onClick={ this.props.resetBoard }>Submit Word</button>        
+        <button className="submit" onClick={ () => this.props.resetBoard() }>Submit Word</button>        
       </div>
     );
   }

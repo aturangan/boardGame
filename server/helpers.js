@@ -9,7 +9,6 @@ module.exports.checkWord = (req, res) => {
   //if word is in trie, send back a NO to client
 
    const word = Object.keys(req.body)[0];
-  console.log('word', word);
 
   // let outcome = {};
 
@@ -30,6 +29,7 @@ module.exports.checkWord = (req, res) => {
     console.log(word + ' was added to the trie');
     outcome = 'Valid'; 
   } else {
+  	console.log(word + ' was not added to the trie');
   	outcome = 'Word Already Added';
   }
 

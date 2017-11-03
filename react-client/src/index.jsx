@@ -4,7 +4,8 @@ import axios from 'axios';
 import logo from './logo.png';
 import styles from './index.css';
 
-import { generateBoard, calculateScore, checkWord } from './util.js';
+import { generateBoard, duplicateBoard, isTileEqual, 
+       isAdjacent, calculateScore, checkWord } from './util.js';
 import Board from './components/Board/Board.jsx';
 import CurrentWord from './components/CurrentWord/CurrentWord.jsx';
 import ScoreTable from './components/ScoreTable/ScoreTable.jsx';
@@ -12,90 +13,120 @@ import ScoreTable from './components/ScoreTable/ScoreTable.jsx';
 class App extends Component {
   constructor(props) {
     super(props);
+
+    this.makeBoard = generateBoard();
     this.state = {
       //selected: false,
-      selectedFreq: {}, 
-      reset: false,
-      count: 0,
-      stack: [],
+      board: this.makeBoard,
       currentWord: '',
+      currentWordIndex: [],
+      //wordScoreList: {},
+
+
+
+
+
+
+      //my states
+      //selectedFreq: {}, 
+      // reset: false,
+      count: 0,
+      //stack: [],
+      // currentWord: '',
       
 
       validWords: [],
       points: [],
       totalScore: 0,
-      renderScores: false
+      //renderScores: false
     }
 
-    this.makeCurrentWord = this.makeCurrentWord.bind(this);
-    this.resetSelectedFreqs = this.resetSelectedFreqs.bind(this);
+    //this.makeCurrentWord = this.makeCurrentWord.bind(this);
+    //this.resetSelectedFreqs = this.resetSelectedFreqs.bind(this);
     this.resetBoard = this.resetBoard.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  makeCurrentWord() {
-    let word = ''; 
+  // makeCurrentWord() {
+  //   let word = ''; 
 
-    for (let i = 0; i < this.state.stack.length; i++) {
-      let letter = this.state.stack[i]; 
-      word += letter; 
+  //   for (let i = 0; i < this.state.stack.length; i++) {
+  //     let letter = this.state.stack[i]; 
+  //     word += letter; 
+  //   }
+
+  //   this.setState({
+  //     currentWord: word
+  //   });
+  // }
+
+  // resetSelectedFreqs() {
+  //   for (let i = 1; i <= 25; i++) {
+  //     this.state.selectedFreq[i] = 0;
+  //   }
+
+  //   console.log('FREQ reset from index jsx', this.state.count);
+  // }
+
+
+
+
+
+
+
+
+  //test run
+  handleClick(rowId, columnId) {
+    const current = this.state.board[rowId][columnId];
+    const previous = this.state.currentWordIndex[this.state.currentWordIndex.length - 1]
+
+    if (current.selected) {
+      if (isTileEqual(current, previous)) {
+        const newBoard = duplicateBoard(this.state.board);
+        newBoard[rowId][columnId].selected = false;
+        
+        this.setState({
+          currentWord: this.state.currentWord.slice(0, -1),
+          board: newBoard,
+          currentWordIndex: this.state.currentWordIndex.slice(0, -1)
+        });
+      }
+    } else {
+      console.log('in else statement')
+
+      if (!previous || isAdjacent(current, previous)) {
+        const newBoard = duplicateBoard(this.state.board);
+        newBoard[rowId][columnId].selected = true;
+
+        this.setState({
+          currentWord: this.state.currentWord.concat(newBoard[rowId][columnId].letter),
+          board: newBoard,
+          currentWordIndex: this.state.currentWordIndex.concat({
+            rowId: rowId,
+            columnId: columnId
+          })
+        });
+      }
     }
-
-    this.setState({
-      currentWord: word
-    });
-  }
-
-  resetSelectedFreqs() {
-    for (let i = 1; i <= 25; i++) {
-      this.state.selectedFreq[i] = 0;
-    }
-
-    console.log('FREQ reset from index jsx', this.state.count);
   }
 
   resetBoard() {
-
     let word = this.state.currentWord;
     let score = calculateScore(word);
 
-    checkWord(word, res => {
+    const emptyBoard = this.makeBoard;
+
+    if (checkWord(word)) {
       const total = score + this.state.totalScore;
 
-      console.log('ressss', res);
-
-      //if (res === 'Valid') {
-        this.setState({
-          validWords: this.state.validWords.concat([word]),
-          points: this.state.points.concat([score]),
-          totalScore: total,
-          renderScores: !this.state.renderScores
-        });        
-      //}
-
-      console.log('valid words', this.state.validWords);
-    }); 
-
-    //call reset freqs every time count is either 1 or 2 
-    //when count is 2, set back to 1 
-
-    if (this.state.count === 2) {
-      this.resetSelectedFreqs();
       this.setState({
-        count: this.state.count - 1,
-        stack: [],
-        currentWord: '',
-        reset: false
-      });
-    } else if (this.state.count === 1 || this.state.count === 0) {
-      this.resetSelectedFreqs();
-      this.setState({
-        count: this.state.count + 1,
-        stack: [],
-        currentWord: '',
-        reset: false
-      });
-  
-      console.log('COUNT FROM INDEX.JSX', this.state.count);
+        board: emptyBoard,
+        validWords: this.state.validWords.concat([word]),
+        points: this.state.points.concat([score]),
+        totalScore: total,
+        currentWordIndex: [],
+        currentWord: ''
+      });    
     }
   }
 
@@ -105,10 +136,13 @@ class App extends Component {
         <img className="logo" src={ logo }/>
         <Board 
           generateBoard={ generateBoard } 
+          board={ this.state.board }
           //selected={ this.state.selected }
           stack={ this.state.stack }
           currentWord={ this.state.currentWord }
           makeCurrentWord={ this.makeCurrentWord }
+
+          handleClick={ this.handleClick }
           
           reset={ this.state.reset }
           count={ this.state.count }
